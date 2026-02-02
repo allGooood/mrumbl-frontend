@@ -1,7 +1,7 @@
 import React from "react";
-import { getResponsiveSize } from "../actions/getResponsiveSize";
-import type { SizeType } from "../hooks/useResponsive";
-import useResponsive from "../hooks/useResponsive";
+import { getResponsiveSize } from "../../actions/getResponsiveSize";
+import type { SizeType } from "../../hooks/useResponsive";
+import useResponsive from "../../hooks/useResponsive";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   size?: SizeType | SizeType[];

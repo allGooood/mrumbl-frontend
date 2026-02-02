@@ -1,10 +1,10 @@
-import { BrowserRouter, Route, Routes, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/privateRoute";
 import Dashboard from "./pages/Dashboard";
-import Button from "./components/Button";
+import Button from "./components/atom/Button";
 import Header from "./components/Header";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useAuthActions } from "./api/authService";
@@ -14,6 +14,7 @@ function AppContent() {
   const isAuthenticated = !!token;
   const { signout } = useAuthActions();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     await signout();
@@ -22,7 +23,8 @@ function AppContent() {
 
   return (
     <div className='App'>
-      <Header />
+      {/* 로그인 페이지에서는 Header 숨김 */}
+      {location.pathname !== "/login" && <Header />}
       <Routes>
         {/* <Route path="/" element={<Home/>}></Route> */}
         <Route path="/login" element={<Login/>}></Route>

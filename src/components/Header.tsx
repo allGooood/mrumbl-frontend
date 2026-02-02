@@ -1,7 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/useAuthStore';
 import { useCartStore } from '../stores/useCartStore';
-import Button from './Button';
+import Button from './atom/Button';
+import Logo from './Logo';
 
 const Header = () => {
   const user = useAuthStore((state) => state.user);
@@ -19,11 +20,9 @@ const Header = () => {
 
   return (
     <header className="w-full">
-      {/* Top black bar */}
-      <div className="h-1 bg-black w-full"></div>
-      
       {/* Main header */}
       <div className="bg-brand-primary py-4 flex items-center justify-between px-30">
+          
           {/* Left: Sign In or User Profile */}
           {user ? (
             <>User Profile</>
@@ -32,12 +31,9 @@ const Header = () => {
               <span>Sign In</span>
             </Button>
           )} 
-          {/* </Link> */}
 
           {/* Center: Logo */}
-          <Link to="/" className="absolute left-1/2 transform -translate-x-1/2">
-            <h1 className="text-3xl font-bold text-black">Mrumbl</h1>
-          </Link>
+          <Logo />
 
           {/* Right: View Bag or Order Now */}
           <div>
