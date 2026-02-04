@@ -1,10 +1,10 @@
 import { BrowserRouter, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Order from "./pages/Order";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/privateRoute";
 import Dashboard from "./pages/Dashboard";
-import Button from "./components/atom/Button";
 import Header from "./components/Header";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useAuthActions } from "./api/authService";
@@ -23,10 +23,14 @@ function AppContent() {
 
   return (
     <div className='App flex flex-col min-h-screen'>
-      {/* 로그인 페이지에서는 Header 숨김 */}
-      {location.pathname !== "/login" && <Header />}
+
+      {location.pathname !== "/login" && (
+        <Header />
+      )}
+
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/order" element={<Order />} />
         <Route path="/login" element={<Login/>}></Route>
 
         {/* 보호된 라우트 */}
@@ -34,6 +38,7 @@ function AppContent() {
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Route>
       </Routes>
+      
 {/* 
       <Link to="/">
         <Button className="mr-2">Home</Button>
