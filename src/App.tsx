@@ -22,11 +22,11 @@ function AppContent() {
   };
 
   return (
-    <div className='App'>
+    <div className='App flex flex-col min-h-screen'>
       {/* 로그인 페이지에서는 Header 숨김 */}
       {location.pathname !== "/login" && <Header />}
       <Routes>
-        {/* <Route path="/" element={<Home/>}></Route> */}
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login/>}></Route>
 
         {/* 보호된 라우트 */}
