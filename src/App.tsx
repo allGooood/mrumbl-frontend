@@ -1,13 +1,16 @@
 import { BrowserRouter, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Order from "./pages/Order";
+import SelectOrderType from "./pages/SelectOrderType";
 import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/privateRoute";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useAuthActions } from "./api/authService";
+import SelectLocation from "./pages/SelectLocation";
+import WorldMap from "./components/location/map/WorldMap";
+import Products from "./pages/Products";
 
 function AppContent() {
   const token = useAuthStore((state) => state.token);
@@ -30,15 +33,17 @@ function AppContent() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/order" element={<Order />} />
-        <Route path="/login" element={<Login/>}></Route>
+        <Route path="/login" element={<Login />} />
+        <Route path="/order" element={<SelectOrderType />} />
+        <Route path="/order/pickup" element={<SelectLocation />} />
+        <Route path="/products" element={<Products />} />
 
         {/* 보호된 라우트 */}
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
         </Route>
       </Routes>
-      
+
 {/* 
       <Link to="/">
         <Button className="mr-2">Home</Button>

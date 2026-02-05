@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import PageLayout from "../components/layout/PageLayout";
 
-const Order = () => {
+const SelectOrderType = () => {
   const cardBase =
     "flex flex-col items-center justify-center rounded-2xl border border-gray-500 shadow-[0_4px_14px_rgba(0,0,0,0.2)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.2)] p-6 min-h-[180px] md:min-h-[220px] transition-shadow cursor-pointer";
 
@@ -9,21 +9,23 @@ const Order = () => {
     <PageLayout title="Start an Order" className="max-w-7xl mt-50">
         <div className="pb-12 w-full pt-5">
             <div className="flex w-full">
+
                 <div className="w-1/2 min-w-0 pr-2 md:pr-3">
-                    {/* Delivery */}
-                    <Link
-                    to="/order/delivery"
-                    className={`${cardBase} bg-brand-primary block h-full`}
-                    aria-label="delivery order"
+                    {/* Delivery - currently unavailable */}
+                    <div
+                      className={`${cardBase} bg-brand-primary block h-full opacity-60 cursor-not-allowed relative`}
+                      aria-label="delivery order (unavailable)"
                     >
-                        <img 
-                        src="/delivery.png"
-                        />
-                        <span className="text-xl md:text-2xl font-bold text-black">
+                      <span className="absolute top-3 right-3 rounded-full bg-gray-700 text-white text-sm font-medium px-2.5 py-1">
+                        Unavailable
+                      </span>
+                      <img src="/delivery.png" alt="" />
+                      <span className="text-xl md:text-2xl font-bold text-black">
                         Delivery
-                        </span>
-                    </Link>
+                      </span>
+                    </div>
                 </div>
+
                 <div className="w-1/2 min-w-0 pl-2 md:pl-3">
                     {/* Pickup */}
                     <Link
@@ -39,10 +41,11 @@ const Order = () => {
                         </span>
                     </Link>
                 </div>
+                
             </div>
         </div>
     </PageLayout>
   );
 };
 
-export default Order;
+export default SelectOrderType;

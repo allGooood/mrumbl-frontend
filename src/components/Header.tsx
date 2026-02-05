@@ -13,6 +13,7 @@ const Header = () => {
 
   const handleOrderButton = () => {
     console.log("handle order");
+    navigate('/order');
   };
 
   const handleSignInButton = () => {
@@ -21,8 +22,8 @@ const Header = () => {
 
   return (
     <header className="w-full">
-      <div className="bg-brand-primary py-4 flex items-center justify-between px-30">
-        {/* Left: equal width for centering */}
+      <div className="bg-brand-primary py-3 flex items-center justify-between px-30">
+        {/* Left */}
         <div className="flex-1 min-w-0 flex justify-start">
           {user ? (
             <ProfileMenu />
@@ -33,12 +34,12 @@ const Header = () => {
           )}
         </div>
 
-        {/* Center: Logo (truly centered) */}
+        {/* Center: Logo */}
         <div className="flex-1 min-w-0 flex justify-center shrink-0">
           <Logo />
         </div>
 
-        {/* Right: equal width for centering */}
+        {/* Right */}
         <div className="flex-1 min-w-0 flex justify-end">
           {hasItems ? (
             <Link
