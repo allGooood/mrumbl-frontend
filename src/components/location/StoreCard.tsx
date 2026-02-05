@@ -1,25 +1,21 @@
+import { Link } from "react-router-dom";
 import { type Store } from "../../api/storeService";
+import { formatAddress } from "../../utils/addressFormatter";
 import BuildingIcon from "../icon/BuildingIcon";
-import OpenLateIcon from "../icon/OpenLateIcon";
+import ClockIcon from "../icon/ClockIcon";
 import ArrowRightIcon from "../icon/ArrowRightIcon";
 
 interface StoreCardProps {
   store: Store;
-  onClick?: () => void;
 }
 
-const StoreCard: React.FC<StoreCardProps> = ({ store, onClick }) => {
-  const address = store.storeAddress
-    ? [store.storeAddress.addressDetail, store.storeAddress.address, store.storeAddress.postcode]
-        .filter(Boolean)
-        .join(", ")
-    : "";
+const StoreCard: React.FC<StoreCardProps> = ({ store }) => {
+  const address = formatAddress(store.storeAddress);
 
   return (
     <li>
-      <button
-        type="button"
-        onClick={onClick}
+      <Link
+        to={`/order/pickup/${store.storeId}`}
         className="w-full flex items-start gap-3 p-3 rounded-xl hover:bg-gray-50 text-left transition-colors group"
       >
         <span className="mt-0.5">
@@ -30,7 +26,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onClick }) => {
           {address && <p className="text-sm text-gray-600">{address}</p>}
           {!store.openNow && (
             <p className="flex items-center gap-1 mt-1 text-sm text-red-600">
-              <OpenLateIcon />
+              <ClockIcon />
               <span>Closed</span>
             </p>
           )}
@@ -38,7 +34,7 @@ const StoreCard: React.FC<StoreCardProps> = ({ store, onClick }) => {
         <span className="mt-1">
           <ArrowRightIcon />
         </span>
-      </button>
+      </Link>
     </li>
   );
 };

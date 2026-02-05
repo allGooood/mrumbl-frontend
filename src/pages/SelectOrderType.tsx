@@ -29,9 +29,9 @@ const SelectOrderType = () => {
                 <div className="w-1/2 min-w-0 pl-2 md:pl-3">
                     {/* Pickup */}
                     <Link
-                    to="/order/pickup"
-                    className={`${cardBase} bg-brand-primary block h-full`}
-                    aria-label="pickup order"
+                      to="/order/pickup"
+                      className={`${cardBase} bg-brand-primary block h-full`}
+                      aria-label="pickup order"
                     >
                         <img 
                         src="/pickup.png"

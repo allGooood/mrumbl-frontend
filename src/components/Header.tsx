@@ -12,7 +12,6 @@ const Header = () => {
   const navigate = useNavigate();
 
   const handleOrderButton = () => {
-    console.log("handle order");
     navigate('/order');
   };
 

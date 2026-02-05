@@ -20,7 +20,7 @@ const Button: React.FC<ButtonProps> = ({
   const responsiveSize = getResponsiveSize(size, currentBreakpoint);
 
   const sizeClasses = {
-    large: "px-8 py-3 text-lg",
+    large: "px-8 py-2.5 text-lg",
     medium: "px-6 py-2 text-base",
     small: "px-5 py-1.5 text-sm",
     xsmall: "px-4 py-1 text-xs",

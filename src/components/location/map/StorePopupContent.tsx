@@ -2,11 +2,12 @@ import { useNavigate } from "react-router-dom";
 import BuildingIcon from "../../icon/BuildingIcon";
 import Button from "../../atom/Button";
 import type { Store } from "../../../api/storeService";
+import { formatAddress } from "../../../utils/addressFormatter";
 
 const StorePopupContent: React.FC<{ store: Store }> = ({ store }) => {
     const navigate = useNavigate();
     const { storeName, storeAddress, coordinates } = store;
-    const addressLine = [storeAddress?.addressDetail, storeAddress?.address].filter(Boolean).join(", ") || "—";
+    const addressLine = formatAddress(storeAddress, { fallback: "—" });
     const postcode = storeAddress?.postcode ?? "";
     const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${coordinates.latitude},${coordinates.longitude}`;
 

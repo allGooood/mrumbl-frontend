@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import MainProductCard from '../components/main/MainProductCard';
 import { useProductActions, type Cookie } from '../api/productService';
+import FullPageLoader from '../components/layout/FullPageLoader';
 
 const Home = () => {
   const [cookies, setCookies] = useState<Cookie[]>([]);
@@ -28,11 +29,7 @@ const Home = () => {
   }, []);
 
   if (loading) {
-    return (
-      <main className="w-full bg-white min-h-screen pb-16 flex items-center justify-center">
-        <div className="text-gray-600 text-lg">Loading...</div>
-      </main>
-    );
+    return <FullPageLoader message="쿠키를 불러오는 중이에요..." />;
   }
 
   if (error) {

@@ -36,7 +36,7 @@ function AppContent() {
         <Route path="/login" element={<Login />} />
         <Route path="/order" element={<SelectOrderType />} />
         <Route path="/order/pickup" element={<SelectLocation />} />
-        <Route path="/products" element={<Products />} />
+        <Route path="/order/pickup/:storeId" element={<Products />} />
 
         {/* 보호된 라우트 */}
         <Route element={<PrivateRoute />}>
