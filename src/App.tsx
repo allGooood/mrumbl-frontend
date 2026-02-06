@@ -11,6 +11,7 @@ import { useAuthActions } from "./api/authService";
 import SelectLocation from "./pages/SelectLocation";
 import WorldMap from "./components/location/map/WorldMap";
 import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 
 function AppContent() {
   const token = useAuthStore((state) => state.token);
@@ -37,6 +38,7 @@ function AppContent() {
         <Route path="/order" element={<SelectOrderType />} />
         <Route path="/order/pickup" element={<SelectLocation />} />
         <Route path="/order/pickup/:storeId" element={<Products />} />
+        <Route path="/order/pickup/:storeId/product/:productId" element={<ProductDetail />} />
 
         {/* 보호된 라우트 */}
         <Route element={<PrivateRoute />}>

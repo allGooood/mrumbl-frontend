@@ -28,10 +28,6 @@ const Home = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
-    return <FullPageLoader message="쿠키를 불러오는 중이에요..." />;
-  }
-
   if (error) {
     return (
       <main className="w-full bg-white min-h-screen pb-16 flex items-center justify-center">
@@ -42,6 +38,8 @@ const Home = () => {
 
   return (
     <main className="flex flex-col w-full bg-white flex-1">
+      {loading && <FullPageLoader />}
+      
       {/* Main Image */}
       <div className="relative w-full mb-30">
         <img 

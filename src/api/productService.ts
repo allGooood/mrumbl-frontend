@@ -32,10 +32,23 @@ export type ProductsByCategory = {
 
 export type getProductsResponse = ProductsByCategory[];
 
+export type getProductDetailResponse = {
+    productId: number;
+    productName: string;
+    unitAmount: number;
+    description: string;
+    stock: number;
+    imageUrl: string | null;
+    discountRate: number;
+    productType: string;
+    requiredItemCount: number;
+}
+
 interface IProductService {
     getCookies: () => Promise<getCookiesResponse>;
     getProducts: (storeId: number) => Promise<ProductsByCategory[]>;
-}
+    getProductDetail: (storeId: number, productId: number) => Promise<getProductDetailResponse>;
+};
 
 export const useProductActions = (): IProductService => {
     const getCookies = async () => {
@@ -52,5 +65,12 @@ export const useProductActions = (): IProductService => {
         return response.data?.data ?? [];
     };
 
-    return { getCookies, getProducts };
+    const getProductDetail = async(storeId: number, productId: number): Promise<getProductDetailResponse> => {
+        const response = await axios.get<ApiSuccessResponse<getProductDetailResponse>>(
+            `/products/${storeId}/${productId}`
+        )
+        return response.data.data;
+    };
+
+    return { getCookies, getProducts, getProductDetail };
 };

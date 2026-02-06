@@ -4,6 +4,7 @@ import SearchBar from "../components/location/SearchBar";
 import StoreCard from "../components/location/StoreCard";
 import { useUserLocation } from "../hooks/useUserLocation";
 import { useStoreSearch } from "../hooks/useStoreSearch";
+import { Link } from "react-router-dom";
 
 const SelectLocation = () => {
   const { userLocation } = useUserLocation();
@@ -26,7 +27,9 @@ const SelectLocation = () => {
 
           <List>
             {stores.map((store) => (
-              <StoreCard key={store.storeId} store={store} />
+              <Link to={`/order/pickup/${store.storeId}`}>
+                <StoreCard key={store.storeId} store={store} />
+              </Link>
             ))}
           </List>
         </div>

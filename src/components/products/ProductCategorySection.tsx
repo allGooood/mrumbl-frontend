@@ -1,3 +1,4 @@
+import { Link, useLocation } from "react-router-dom";
 import type { Product } from "../../api/productService";
 import ProductCard from "./ProductCard";
 
@@ -17,6 +18,8 @@ const ProductCategorySection = ({
       ? "grid-cols-1 sm:grid-cols-2"
       : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
 
+  const location = useLocation();
+
   return (
     <section className="w-full mb-18">
       <h2 className="text-2xl md:text-4xl font-extrabold text-black mb-6">
@@ -28,7 +31,9 @@ const ProductCategorySection = ({
       >
         {products.map((product) => (
           <li key={product.productId}>
-            <ProductCard product={product} />
+            <Link to={`${location.pathname}/product/${product.productId}`}>
+              <ProductCard product={product} />
+            </Link>
           </li>
         ))}
       </ul>
