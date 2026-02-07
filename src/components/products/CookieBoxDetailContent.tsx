@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { type Cookie, useProductActions, type getProductDetailResponse } from "../../api/productService";
 import QuantitySelector, { getAvailableMax } from "../atom/QuantitySelector";
 import Button from "../atom/Button";
 import { formatCentAsDollar } from "../../utils/priceFormatter";
+import { parseId } from "../../utils/urlManager";
+import { useAddToCart } from "../../hooks/cart/useAddToCart";
 
 type CookieBoxDetailContentProps = {
   product: getProductDetailResponse;
@@ -10,6 +13,14 @@ type CookieBoxDetailContentProps = {
 
 const CookieBoxDetailContent = ({ product }: CookieBoxDetailContentProps) => {
   const { getCookies } = useProductActions();
+  const { storeId: storeIdParam } = useParams<{ storeId?: string }>();
+  const storeId = parseId(storeIdParam);
+
+  const { addToCart, loading: addToCartLoading, error: addToCartError } = useAddToCart({
+    productId: product.productId,
+    storeId,
+    productType: product.productType
+  });
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -32,11 +43,16 @@ const CookieBoxDetailContent = ({ product }: CookieBoxDetailContentProps) => {
         fetchCookies();
     }, []);
 
+    // Cookie 목록 용 함수
+    const setCookieQuantity = useCallback((cookieId: number, value: number) => {
+        setCookieQuantities((prev) => ({ ...prev, [cookieId]: value }));
+    }, []);
     const total = Object.values(cookieQuantities)
                         .reduce((sum, q) => sum + q, 0);
 
     const required = product.requiredItemCount ?? 0;
 
+    // 버튼 용 함수 (Additional Price 쿠키가 포함된 경우를 위해)
     const totalPrice = cookies.reduce((sum, cookie) => {
         const qty = cookieQuantities[cookie.cookieId] ?? 0;
         const additionalPriceInCents = cookie.additionalPrice != null && 
@@ -44,15 +60,30 @@ const CookieBoxDetailContent = ({ product }: CookieBoxDetailContentProps) => {
         return sum + (qty * additionalPriceInCents);
     }, product.unitAmount);
 
-    const setCookieQuantity = useCallback((cookieId: number, value: number) => {
-        setCookieQuantities((prev) => ({ ...prev, [cookieId]: value }));
-    }, []);
+    const handleAddToBag = () => {
+        const options = Object.entries(cookieQuantities)
+                                .filter(([, q]) => q > 0)
+                                .map(([cookieId, quantity]) => ({
+                                    cookieId: Number(cookieId),
+                                    quantity,
+                                })); 
+        addToCart({ quantity: 1, options });
+    };
+
+    if (loading) {
+        return <p className="text-black/60 text-sm">쿠키 목록을 불러오는 중...</p>;
+    }
+    if (error) {
+        return <p className="text-red-600 text-sm">{error}</p>;
+    }
 
     return (
         <>
             <h1 className="text-2xl md:text-4xl font-extrabold text-black mb-2">
                 Select {product.requiredItemCount} Flavors
             </h1>
+
+            {/* Cookie 목록 */}
             <div className="flex flex-col mt-4">
                 {cookies.map((cookie) => {
                     const qty = cookieQuantities[cookie.cookieId] ?? 0;
@@ -98,19 +129,33 @@ const CookieBoxDetailContent = ({ product }: CookieBoxDetailContentProps) => {
                 })}
             </div>
 
+            {addToCartError && (
+                <p className="text-red-600 text-sm mt-2" role="alert">
+                    {addToCartError}
+                </p>
+            )}
+
+            {/* Add to Bag 버튼 */}
             <div className="mt-8">
                 <Button
                     type="button"
-                    onClick={() => {
-                        // TODO: cart 연동
-                    }}
+                    onClick={handleAddToBag}
+                    // onClick={() => {
+                    //     const options = Object.entries(cookieQuantities)
+                    //         .filter(([, q]) => q > 0)
+                    //         .map(([cookieId, quantity]) => ({
+                    //             cookieId: Number(cookieId),
+                    //             quantity,
+                    //         }));
+                    //     addToCart({ quantity: 1, options });
+                    // }}
                     className="w-full flex flex-row justify-between"
-                    disabled={total < required || required === 0}
+                    disabled={total < required || required === 0 || addToCartLoading}
                 >
                     {total < required ? (
                         <p>Add {required - total} more</p>
                     ) : (
-                        <p>Add to Bag</p>
+                        <p>{addToCartLoading ? "Adding…" : "Add to Bag"}</p>
                     )}
                     <p>{formatCentAsDollar(totalPrice)}</p>
                 </Button>

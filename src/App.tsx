@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import SelectOrderType from "./pages/SelectOrderType";
@@ -6,6 +6,8 @@ import { AuthProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/privateRoute";
 import Dashboard from "./pages/Dashboard";
 import Header from "./components/Header";
+import CartSidebar from "./components/cart/CartSidebar";
+import { useCartSyncOnAuth } from "./hooks/cart/useCartSyncOnAuth";
 import { useAuthStore } from "./stores/useAuthStore";
 import { useAuthActions } from "./api/authService";
 import SelectLocation from "./pages/SelectLocation";
@@ -20,6 +22,8 @@ function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useCartSyncOnAuth();
+
   const handleLogout = async () => {
     await signout();
     navigate('/');
@@ -31,6 +35,8 @@ function AppContent() {
       {location.pathname !== "/login" && (
         <Header />
       )}
+
+      <CartSidebar />
 
       <Routes>
         <Route path="/" element={<Home />} />

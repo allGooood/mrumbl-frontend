@@ -117,40 +117,6 @@ const QuantitySelector: React.FC<QuantitySelectorProps> = ({
       </button>
     </div>
   );
-
-  // Legacy commented markup kept for reference:
-  // <div
-    //   className={`inline-flex items-center border border-gray-300 rounded-lg overflow-hidden bg-white ${className}`}
-    //   role="group"
-    //   aria-label={ariaLabel}
-    // >
-    //   <button
-    //     type="button"
-    //     aria-label="수량 줄이기"
-    //     onClick={handleDecrease}
-    //     disabled={!canDecrease}
-    //     className="w-11 h-11 flex items-center justify-center text-black hover:bg-gray-100 transition-colors 
-    //             disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
-    //   >
-    //     −
-    //   </button>
-    //   <span
-    //         className="w-11 h-11 flex items-center justify-center text-black font-medium border-x border-gray-300 bg-white tabular-nums"
-    //         aria-live="polite"
-    //   >
-    //     {value}
-    //   </span>
-    //   <button
-    //     type="button"
-    //     aria-label="수량 늘리기"
-    //     onClick={handleIncrease}
-    //     disabled={!canIncrease}
-    //     className="w-11 h-11 flex items-center justify-center text-black hover:bg-gray-100 transition-colors 
-    //             disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
-  //   >
-  //     +
-  //   </button>
-  // </div>
 };
 
 /** 의존 모드: 전체 수량(total)과 다른 선택기들 합(othersSum)으로 이 선택기의 max 계산 */

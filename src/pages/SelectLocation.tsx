@@ -27,8 +27,8 @@ const SelectLocation = () => {
 
           <List>
             {stores.map((store) => (
-              <Link to={`/order/pickup/${store.storeId}`}>
-                <StoreCard key={store.storeId} store={store} />
+              <Link key={store.storeId} to={`/order/pickup/${store.storeId}`}>
+                <StoreCard store={store} />
               </Link>
             ))}
           </List>

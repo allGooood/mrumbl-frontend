@@ -45,11 +45,6 @@ const ProductDetail = () => {
         fetchProduct();
     }, [storeId, productId]);
 
-    const handleAddToBag = () => {
-        if (!product) return;
-        // TODO: cart 연동
-    };
-
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] bg-white mt-8">
         {loading && <FullPageLoader />}

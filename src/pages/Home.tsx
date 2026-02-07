@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import MainProductCard from '../components/main/MainProductCard';
 import { useProductActions, type Cookie } from '../api/productService';
 import FullPageLoader from '../components/layout/FullPageLoader';
+import Button from '../components/atom/Button';
+import { OrderNowButton } from '../components/OrderNowButton';
 
 const Home = () => {
   const [cookies, setCookies] = useState<Cookie[]>([]);
@@ -47,10 +49,11 @@ const Home = () => {
           alt="Main"
           className="w-full h-auto object-cover"
         />
-        <div className="absolute inset-0 flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center justify-center flex-col gap-10">
           <h1 className="text-white text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-extrabold text-center px-4 drop-shadow-lg">
             Taste Mrumbl's Classic Flavor Right Now!
           </h1>
+          <OrderNowButton />
         </div>
       </div>
       
