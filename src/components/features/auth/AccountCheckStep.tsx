@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Step } from '../../common/Step';
 import TextInput from '../../ui/TextInput';
 import { useUserService } from '../../../api/userService';
-import { useLoginForm } from '../../../hooks/useLoginForm';
+import { useLoginForm } from '../../../features/auth/hooks/useLoginForm';
 import { getErrorMessage } from '../../../utils/errorHandler';
 
 interface AccountCheckStepProps {

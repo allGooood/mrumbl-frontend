@@ -1,7 +1,7 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { STORAGE_KEYS } from '../constants/storage';
-import { useAuthStore } from '../stores/useAuthStore';
+import { useAuthStore } from '../features/auth/stores/useAuthStore';
 
 // 백엔드 공통 응답 타입 (api 레이어에서 사용)
 export interface ApiSuccessResponse<T> {

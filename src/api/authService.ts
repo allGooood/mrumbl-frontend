@@ -1,4 +1,4 @@
-import { useAuthStore, type User } from '../stores/useAuthStore';
+import { useAuthStore, type User } from '../features/auth/stores/useAuthStore';
 import axios from './axios';
 import type { ApiSuccessResponse } from './axios';
 import { STORAGE_KEYS } from '../constants/storage';

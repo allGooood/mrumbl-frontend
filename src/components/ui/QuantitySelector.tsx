@@ -1,6 +1,6 @@
 import React from "react";
-import useResponsive from "../../hooks/useResponsive";
-import { getResponsiveValue } from "../../hooks/getResponsiveSize";
+import useResponsive from "../../shared/hooks/useResponsive";
+import { getResponsiveValue } from "../../shared/hooks/getResponsiveSize";
 
 /** large=기본, medium/small/compact=점점 작음. 단일값=고정, 배열=[wide, desktop, tablet, mobile] 반응형 */
 export type QuantitySizeType = "large" | "medium" | "small" | "xsmall";

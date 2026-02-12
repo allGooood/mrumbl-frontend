@@ -1,17 +1,17 @@
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import SelectOrderType from "./pages/SelectOrderType";
-import { AuthProvider } from "./context/AuthContext";
+import Home from "./features/home/pages/Home";
+import Login from "./features/auth/pages/Login";
+import SelectOrderType from "./features/order/pages/SelectOrderType";
+import { AuthProvider } from "./features/auth/context/AuthContext";
 import PrivateRoute from "./components/common/privateRoute";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./features/auth/pages/Dashboard";
 import Header from "./components/common/Header";
 import CartSidebar from "./components/features/cart/CartSidebar";
-import { useCartSyncOnAuth } from "./hooks/cart/useCartSyncOnAuth";
-import { useAuthStore } from "./stores/useAuthStore";
-import SelectLocation from "./pages/SelectLocation";
-import Products from "./pages/Products";
-import ProductDetail from "./pages/ProductDetail";
+import { useCartSyncOnAuth } from "./features/cart/hooks/useCartSyncOnAuth";
+import { useAuthStore } from "./features/auth/stores/useAuthStore";
+import SelectLocation from "./features/store/pages/SelectLocation";
+import Products from "./features/product/pages/Products";
+import ProductDetail from "./features/product/pages/ProductDetail";
 
 function AppContent() {
   useAuthStore((state) => state.token);

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Step } from '../../common/Step';
-import { useLoginForm } from '../../../hooks/useLoginForm';
+import { useLoginForm } from '../../../features/auth/hooks/useLoginForm';
 import { useNavigate } from 'react-router-dom';
 
 const SignUpCompleteStep = () => {

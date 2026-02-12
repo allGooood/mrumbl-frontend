@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../../stores/useAuthStore';
-import { useCartStore } from '../../stores/useCartStore';
+import { useAuthStore } from '../../features/auth/stores/useAuthStore';
+import { useCartStore } from '../../features/cart/stores/useCartStore';
 import Button from '../ui/Button';
 import Logo from './Logo';
 import ProfileMenu from './ProfileMenu';

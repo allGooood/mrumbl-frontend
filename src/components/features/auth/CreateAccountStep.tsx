@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { Step } from "../../common/Step";
 import TextInput from "../../ui/TextInput";
-import { useLoginForm } from "../../../hooks/useLoginForm";
+import { useLoginForm } from "../../../features/auth/hooks/useLoginForm";
 import { useAuthActions } from "../../../api/authService";
 import { getErrorMessage } from "../../../utils/errorHandler";
 

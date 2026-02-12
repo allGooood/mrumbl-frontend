@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import { useCartStore } from "../../../stores/useCartStore";
-import { useAuthStore } from "../../../stores/useAuthStore";
-import { useUpdateCart } from "../../../hooks/cart/useUpdateCart";
+import { useCartStore } from "../../../features/cart/stores/useCartStore";
+import { useAuthStore } from "../../../features/auth/stores/useAuthStore";
+import { useUpdateCart } from "../../../features/cart/hooks/useUpdateCart";
 import CartSidebarHeader from "./CartSidebarHeader";
 import CartEmpty from "./CartEmpty";
 import CartItemRow from "./CartItemRow";

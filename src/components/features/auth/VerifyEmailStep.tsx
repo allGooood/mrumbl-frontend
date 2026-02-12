@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Step } from '../../common/Step';
 import TextInput from '../../ui/TextInput';
-import { useLoginForm } from '../../../hooks/useLoginForm';
+import { useLoginForm } from '../../../features/auth/hooks/useLoginForm';
 import { useAuthActions } from '../../../api/authService';
 import { formatTimer } from '../../../utils/timerFormatter';
 import { getErrorMessage } from '../../../utils/errorHandler';
