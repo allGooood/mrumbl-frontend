@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useProductActions, type getProductDetailResponse, type Product } from "../api/productService";
-import FullPageLoader from "../components/layout/FullPageLoader";
+import { useProductActions, type getProductDetailResponse } from "../api/productService";
 import { parseId } from "../utils/urlManager";
-import CookieBoxDetailContent from "../components/products/CookieBoxDetailContent";
-import MerchDetailContent from "../components/products/MerchDetailContent";
+import CookieBoxDetailContent from "../components/features/products/CookieBoxDetailContent";
+import MerchDetailContent from "../components/features/products/MerchDetailContent";
+import FullPageLoader from "../components/ui/layout/FullPageLoader";
 
 type RouteParams = {
     storeId: string;
@@ -20,7 +20,7 @@ const ProductDetail = () => {
 
     const [product, setProduct] = useState<getProductDetailResponse | null>(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [_error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (storeId === null || productId === null) return;

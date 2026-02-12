@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import PageLayout from "../components/layout/PageLayout";
+import PageLayout from "../components/ui/layout/PageLayout";
 
 const SelectOrderType = () => {
   const cardBase =

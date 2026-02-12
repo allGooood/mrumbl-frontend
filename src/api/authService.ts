@@ -1,6 +1,6 @@
 import { useAuthStore, type User } from '../stores/useAuthStore';
 import axios from './axios';
-import type { ApiSuccessResponse } from '../types/response';
+import type { ApiSuccessResponse } from './axios';
 import { STORAGE_KEYS } from '../constants/storage';
 
 export interface LoginRequest {

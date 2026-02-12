@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
-import MainProductCard from '../components/main/MainProductCard';
+import MainProductCard from '../components/features/main/MainProductCard';
 import { useProductActions, type Cookie } from '../api/productService';
-import FullPageLoader from '../components/layout/FullPageLoader';
-import Button from '../components/atom/Button';
-import { OrderNowButton } from '../components/OrderNowButton';
+import { OrderNowButton } from '../components/common/OrderNowButton';
+import FullPageLoader from '../components/ui/layout/FullPageLoader';
 
 const Home = () => {
   const [cookies, setCookies] = useState<Cookie[]>([]);

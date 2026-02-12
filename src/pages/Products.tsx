@@ -5,11 +5,11 @@ import {
   useStoreService,
   type getStoreInformationResponse,
 } from "../api/storeService";
-import ProductCategorySection from "../components/products/ProductCategorySection";
-import ProductsStoreBar from "../components/products/ProductsStoreBar";
-import LocationPickerPanel from "../components/products/LocationPickerPanel";
-import FullPageLoader from "../components/layout/FullPageLoader";
+import ProductCategorySection from "../components/features/products/ProductCategorySection";
+import ProductsStoreBar from "../components/features/products/ProductsStoreBar";
+import LocationPickerPanel from "../components/features/products/LocationPickerPanel";
 import { parseId } from "../utils/urlManager";
+import FullPageLoader from "../components/ui/layout/FullPageLoader";
 
 type RouteParams = {
   storeId: string;

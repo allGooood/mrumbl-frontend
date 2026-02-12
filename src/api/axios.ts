@@ -1,8 +1,35 @@
 import axios, { AxiosError, type AxiosResponse } from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { type ApiResponse, isErrorResponse } from '../types/response';
 import { STORAGE_KEYS } from '../constants/storage';
 import { useAuthStore } from '../stores/useAuthStore';
+
+// 백엔드 공통 응답 타입 (api 레이어에서 사용)
+export interface ApiSuccessResponse<T> {
+  success: true;
+  message: string;
+  data: T;
+  transactionTime: string;
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  errorCode: string;
+  message: string;
+}
+
+export type ApiResponse<T> = ApiSuccessResponse<T> | ApiErrorResponse;
+
+export function isSuccessResponse<T>(
+  response: ApiResponse<T>
+): response is ApiSuccessResponse<T> {
+  return response.success === true;
+}
+
+export function isErrorResponse(
+  response: ApiResponse<unknown>
+): response is ApiErrorResponse {
+  return response.success === false;
+}
 
 interface DecodedToken {
   exp?: number;

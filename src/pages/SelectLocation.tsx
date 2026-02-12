@@ -1,7 +1,7 @@
-import List from "../components/atom/List";
-import WorldMap from "../components/location/map/WorldMap";
-import SearchBar from "../components/location/SearchBar";
-import StoreCard from "../components/location/StoreCard";
+import List from "../components/ui/List";
+import WorldMap from "../components/features/location/map/WorldMap";
+import SearchBar from "../components/features/location/SearchBar";
+import StoreCard from "../components/features/location/StoreCard";
 import { useUserLocation } from "../hooks/useUserLocation";
 import { useStoreSearch } from "../hooks/useStoreSearch";
 import { Link } from "react-router-dom";

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { LoginFormProvider } from '../context/LoginFormProvider';
-import AccountCheckStep from '../components/auth/AccountCheckStep';
-import ProceedStep from '../components/auth/ProceedStep';
-import CreateAccountStep from '../components/auth/CreateAccountStep';
-import VerifyEmailStep from '../components/auth/VerifyEmailStep';
-import SignUpCompleteStep from '../components/auth/SignUpCompleteStep';
-import SignInStep from '../components/auth/SignInStep';
+import AccountCheckStep from '../components/features/auth/AccountCheckStep';
+import ProceedStep from '../components/features/auth/ProceedStep';
+import CreateAccountStep from '../components/features/auth/CreateAccountStep';
+import VerifyEmailStep from '../components/features/auth/VerifyEmailStep';
+import SignUpCompleteStep from '../components/features/auth/SignUpCompleteStep';
+import SignInStep from '../components/features/auth/SignInStep';
 
 const STEPS = {
     ACCOUNT_CHECK: 0,

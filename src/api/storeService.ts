@@ -1,5 +1,5 @@
 import axios from "./axios";
-import type { ApiSuccessResponse } from "../types/response";
+import type { ApiSuccessResponse } from "./axios";
 
 export interface Store {
     storeId: number;
