@@ -1,33 +1,34 @@
 import { useEffect, useState } from 'react';
-import MainProductCard from '../../../components/features/main/MainProductCard';
-import { useProductActions, type Cookie } from '../../../api/productService';
-import { useLoading } from '../../../shared/hooks/useLoading';
-import { OrderNowButton } from '../../../components/common/OrderNowButton';
+import MainProductCard from '../components/features/main/MainProductCard';
+import { useProductActions, type Cookie } from '../api/productService';
+
+import { useLoading } from '../shared/hooks/useLoading';
+import { OrderNowButton } from '../components/common/OrderNowButton';
 
 const Home = () => {
   const [cookies, setCookies] = useState<Cookie[]>([]);
-  const { setLoading, setMessage } = useLoading();
+  const { setLoading } = useLoading();
   const [error, setError] = useState<string | null>(null);
   const { getCookies } = useProductActions();
 
   useEffect(() => {
     const fetchCookies = async () => {
       try {
-        setMessage('쿠키를 불러오는 중...');
         setLoading(true);
         setError(null);
         const data = await getCookies();
         setCookies(data);
+
       } catch (err) {
         setError(err instanceof Error ? err.message : '쿠키 정보를 불러오는데 실패했습니다.');
         console.error('Failed to fetch cookies:', err);
+
       } finally {
         setLoading(false);
       }
     };
 
     fetchCookies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (error) {
@@ -40,6 +41,8 @@ const Home = () => {
 
   return (
     <main className="flex flex-col w-full bg-white flex-1">
+      
+      {/* Main Image */}
       <div className="relative w-full mb-30">
         <img 
           src="/main.webp"
@@ -54,6 +57,7 @@ const Home = () => {
         </div>
       </div>
       
+      {/* Product Cards */}
       <div className="w-full flex flex-col">
         {cookies.map((cookie, index) => (
           <MainProductCard

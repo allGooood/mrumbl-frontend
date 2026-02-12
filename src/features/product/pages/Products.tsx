@@ -9,7 +9,7 @@ import ProductCategorySection from "../../../components/features/product/Product
 import ProductsStoreBar from "../../../components/features/product/ProductsStoreBar";
 import LocationPickerPanel from "../../../components/features/product/LocationPickerPanel";
 import { parseId } from "../../../utils/urlManager";
-import FullPageLoader from "../../../components/ui/layout/FullPageLoader";
+import { useLoading } from "../../../shared/hooks/useLoading";
 
 type RouteParams = {
   storeId: string;
@@ -25,10 +25,10 @@ const Products = (): React.ReactElement => {
 
   const { getProducts } = useProductActions();
   const { getStoreInformation } = useStoreService();
+  const { setLoading } = useLoading();
 
   const [products, setProducts] = useState<ProductsByCategory[]>([]);
   const [store, setStore] = useState<getStoreInformationResponse | null>(null);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showLocationPanel, setShowLocationPanel] = useState(false);
 
@@ -82,7 +82,6 @@ const Products = (): React.ReactElement => {
 
   return (
     <div className="pb-8">
-      {loading && <FullPageLoader />}
       <ProductsStoreBar
         store={store}
         orderType={orderType}

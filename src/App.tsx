@@ -3,6 +3,7 @@ import Home from "./features/home/pages/Home";
 import Login from "./features/auth/pages/Login";
 import SelectOrderType from "./features/order/pages/SelectOrderType";
 import { AuthProvider } from "./features/auth/context/AuthContext";
+import { LoadingProvider } from "./shared/context/LoadingProvider";
 import PrivateRoute from "./components/common/privateRoute";
 import Dashboard from "./features/auth/pages/Dashboard";
 import Header from "./components/common/Header";
@@ -13,18 +14,16 @@ import SelectLocation from "./features/store/pages/SelectLocation";
 import Products from "./features/product/pages/Products";
 import ProductDetail from "./features/product/pages/ProductDetail";
 
-function AppContent() {
+const AppContent = () => {
   useAuthStore((state) => state.token);
   const location = useLocation();
-
+  
   useCartSyncOnAuth();
 
   return (
     <div className='App flex flex-col min-h-screen'>
 
-      {location.pathname !== "/login" && (
-        <Header />
-      )}
+      {location.pathname !== "/login" && <Header />}
 
       <CartSidebar />
 
@@ -58,16 +57,19 @@ function AppContent() {
       )} */}
     </div>
   );
-}
+};
 
-function App() {
+const App = () => {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppContent />
-      </BrowserRouter>
+      <LoadingProvider>
+        <BrowserRouter>
+          <AppContent />
+        </BrowserRouter>
+      </LoadingProvider>
     </AuthProvider>
   );
-}
+};
 
-export default App
+export default App;
+

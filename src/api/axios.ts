@@ -97,7 +97,6 @@ instance.interceptors.request.use(
 // 응답 인터셉터
 instance.interceptors.response.use(
   (response: AxiosResponse<ApiResponse<unknown>>) => {
-
     // 백엔드 응답이 성공이지만 success가 false인 경우 처리
     if (isErrorResponse(response.data)) {
       const error = new Error(response.data.message);

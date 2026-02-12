@@ -1,13 +1,13 @@
+
 interface FullPageLoaderProps {
-  /** 가운데 표시할 텍스트 (예: "쿠키를 불러오는 중...") */
-  message?: string;
+  message: string;
 }
 
 const FullPageLoader: React.FC<FullPageLoaderProps> = ({
-  message = "Loading...",
+  message,
 }) => {
   return (
-    <main className="w-full min-h-[calc(100vh-3.5rem)] bg-white flex items-center justify-center">
+    <main className="fixed inset-0 z-[200] bg-white w-full min-h-[calc(100vh-3.5rem)] bg-white flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         {/* 브랜드 로고 */}
         <div className="px-6 py-3 rounded-full bg-brand-primary shadow-md">

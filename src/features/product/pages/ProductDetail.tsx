@@ -4,7 +4,7 @@ import { useProductActions, type getProductDetailResponse } from "../../../api/p
 import { parseId } from "../../../utils/urlManager";
 import CookieBoxDetailContent from "../../../components/features/product/CookieBoxDetailContent";
 import MerchDetailContent from "../../../components/features/product/MerchDetailContent";
-import FullPageLoader from "../../../components/ui/layout/FullPageLoader";
+import { useLoading } from "../../../shared/hooks/useLoading";
 
 type RouteParams = {
     storeId: string;
@@ -17,9 +17,9 @@ const ProductDetail = () => {
     const productId = parseId(productIdParam);
 
     const { getProductDetail } = useProductActions();
+    const { setLoading } = useLoading();
 
     const [product, setProduct] = useState<getProductDetailResponse | null>(null);
-    const [loading, setLoading] = useState(true);
     const [_error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -47,8 +47,6 @@ const ProductDetail = () => {
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] bg-white mt-8">
-        {loading && <FullPageLoader />}
-
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-15 items-start">
                 
