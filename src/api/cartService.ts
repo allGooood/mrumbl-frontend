@@ -38,7 +38,11 @@ export type CartResponse = {
     cartIds: string[];
 }
 
-export type GetCartsResponse = Cart[];
+// export type GetCartsResponse = Cart[];
+export type GetCartsResponse = {
+    storeId: number;
+    items: Cart[];
+};
 
 export type UpdateCartRequest = {
     cartId: string;
@@ -66,7 +70,7 @@ export const useCartActions = (): ICartService => {
         const response = await axios.get<ApiSuccessResponse<GetCartsResponse>>(
             "/carts"
         );
-        return response.data.data ?? [];
+        return response.data.data;
     };
 
     const updateCart = async (request: UpdateCartRequest) => {

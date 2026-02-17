@@ -2,11 +2,17 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { Cart } from "../../../api/cartService";
 
-type CartItem = Cart;  
+type CartItem = Cart;
+
+export type SetCartPayload = {
+  storeId: number | null;
+  items: CartItem[];
+};
 
 export interface CartState {
+  storeId: number | null;
   items: CartItem[];
-  setItems: (items: CartItem[]) => void;
+  setCart: (payload: SetCartPayload) => void;
 
   isCartOpen: boolean;
   openCart: () => void;
@@ -22,8 +28,9 @@ export interface CartState {
 }
 
 export const useCartStore = create(persist<CartState>((set, get) => ({
+    storeId: null,
     items: [],
-    setItems: (items) => set({ items }),
+    setCart: ({ storeId, items }) => set({ storeId, items }),
 
     isCartOpen: false,
     openCart: () => set({ isCartOpen: true }),
@@ -62,7 +69,7 @@ export const useCartStore = create(persist<CartState>((set, get) => ({
     },
 
     clearCart: () => {
-      set({ items: [] });
+      set({ storeId: null, items: [] });
     },
 
     getTotalItems: () => {

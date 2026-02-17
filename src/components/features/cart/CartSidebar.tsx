@@ -7,23 +7,21 @@ import CartSidebarHeader from "./CartSidebarHeader";
 import CartEmpty from "./CartEmpty";
 import CartItemRow from "./CartItemRow";
 import CartSidebarFooter from "./CartSidebarFooter";
+import { useNavigate } from "react-router-dom";
 
 const CART_PANEL_WIDTH = "min(400px, 100vw - 2rem)";
 
 export default function CartSidebar() {
-  const items = useCartStore((state) => state.items);
-  const isCartOpen = useCartStore((state) => state.isCartOpen);
-  const closeCart = useCartStore((state) => state.closeCart);
+  const { storeId, items, isCartOpen, closeCart } = useCartStore();
+  const subtotal = useCartStore((state) => state.getSubTotal());
   const { syncUpdateQuantity, syncRemoveItem } = useUpdateCart();
+  const navigate = useNavigate();
+  const { user } = useAuthStore();
 
-  const subtotal = useCartStore((state) =>
-    state.items.reduce(
-      (sum, item) => sum + (item.productAmount ?? item.unitAmount * item.quantity),
-      0
-    )
-  );
-
-  const user = useAuthStore((state) => state.user);
+  const handleCheckout = () => {
+    closeCart();
+    navigate(`/order/pickup/${storeId}/checkout`);
+  };
 
   useEffect(() => {
     const onEscape = (e: KeyboardEvent) => {
@@ -83,7 +81,7 @@ export default function CartSidebar() {
           <CartSidebarFooter
             subtotal={subtotal}
             canCheckout={items.length > 0 && !!user}
-            onCheckout={closeCart}
+            onCheckout={handleCheckout}
           />
         </div>
       </div>

@@ -6,24 +6,26 @@ import { useCartActions } from "../../../api/cartService";
 export function useCartSyncOnAuth() {
     const user = useAuthStore((state) => state.user);
     const { getCarts } = useCartActions();
-    const setItems = useCartStore((state) => state.setItems);
-    const clearCart = useCartStore((state) => state.clearCart);
+    const { setCart, clearCart } = useCartStore();
 
     const getCartsRef = useRef(getCarts);
-    const setItemsRef = useRef(setItems);
+    const setCartRef = useRef(setCart);
     const clearCartRef = useRef(clearCart);
     getCartsRef.current = getCarts;
-    setItemsRef.current = setItems;
+    setCartRef.current = setCart;
     clearCartRef.current = clearCart;
 
     useEffect(() => {
         if (user) {
             getCartsRef.current()
                 .then((carts) => {
-                    setItemsRef.current(carts);
+                    setCartRef.current({
+                        storeId: carts?.storeId ?? null,
+                        items: carts?.items ?? [],
+                    });
                 })
                 .catch(() => {
-                    setItemsRef.current([]);
+                    setCartRef.current({ storeId: null, items: [] });
                 });
         } else {
             clearCartRef.current();

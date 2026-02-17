@@ -1,23 +1,39 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import type { getProductDetailResponse } from "../../../api/productService";
 import { formatCentAsDollar } from "../../../utils/priceFormatter";
 import Button from "../../ui/Button";
 import QuantitySelector from "../../ui/QuantitySelector";
 import { parseId } from "../../../utils/urlManager";
 import { useAddToCart } from "../../../features/cart/hooks/useAddToCart";
+import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
 
 const MerchDetailContent = ({ product }: { product: getProductDetailResponse }) => {
     const { storeId: storeIdParam } = useParams<{ storeId?: string }>();
+    const navigate = useNavigate();
     const storeId = parseId(storeIdParam);
 
-    const { addToCart, loading, error } = useAddToCart({
+    const { addToCart, loading, error, setError } = useAddToCart({
         productId: product.productId,
         storeId,
         productType: product.productType
     });
 
     const [quantity, setQuantity] = useState(1);
+
+    const { showDialog } = useAppDialogStore();
+
+    useEffect(() => {
+        if (!error) return;
+        showDialog({
+            title: "Invalid request",
+            description: error,
+            onConfirm: () => {
+                setError(null);
+            },
+        });
+    }, [error, showDialog, setError, navigate]);
+
 
     return (
         <>
@@ -30,12 +46,6 @@ const MerchDetailContent = ({ product }: { product: getProductDetailResponse }) 
             <p className="text-black text-base leading-relaxed">
                 {product.description}
             </p>
-
-            {error && (
-                <p className="text-red-600 text-sm mt-2" role="alert">
-                    {error}
-                </p>
-            )}
 
             <div className="flex items-center justify-between gap-5 mt-15">
                 <QuantitySelector

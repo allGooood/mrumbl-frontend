@@ -1,10 +1,11 @@
 import List from "../../../components/ui/List";
-import WorldMap from "../../../components/features/store/map/WorldMap";
-import SearchBar from "../../../components/features/store/SearchBar";
-import StoreCard from "../../../components/features/store/StoreCard";
+
 import { useUserLocation } from "../hooks/useUserLocation";
 import { useStoreSearch } from "../hooks/useStoreSearch";
 import { Link } from "react-router-dom";
+import WorldMap from "../../../components/features/store/map/WorldMap";
+import SearchBar from "../../../components/features/store/SearchBar";
+import StoreCard from "../../../components/features/store/StoreCard";
 
 const SelectLocation = () => {
   const { userLocation } = useUserLocation();

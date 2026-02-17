@@ -15,6 +15,7 @@ import SelectLocation from "./features/store/pages/SelectLocation";
 import Products from "./features/product/pages/Products";
 import ProductDetail from "./features/product/pages/ProductDetail";
 import GlobalToaster from "./components/ui/layout/GlobalToaster";
+import CheckOut from "./features/order/pages/CheckOut";
 
 const AppContent = () => {
   useAuthStore((state) => state.token);
@@ -42,6 +43,7 @@ const AppContent = () => {
         {/* 보호된 라우트 */}
         <Route element={<PrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />}></Route>
+          <Route path="/order/pickup/:storeId/checkout" element={<CheckOut />}/>
         </Route>
       </Routes>
 
