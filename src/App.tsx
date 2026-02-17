@@ -4,6 +4,7 @@ import Login from "./features/auth/pages/Login";
 import SelectOrderType from "./features/order/pages/SelectOrderType";
 import { AuthProvider } from "./features/auth/context/AuthContext";
 import { LoadingProvider } from "./shared/context/LoadingProvider";
+import { GlobalDialog } from "./components/ui/layout/GlobalDialog";
 import PrivateRoute from "./components/common/privateRoute";
 import Dashboard from "./features/auth/pages/Dashboard";
 import Header from "./components/common/Header";
@@ -13,6 +14,7 @@ import { useAuthStore } from "./features/auth/stores/useAuthStore";
 import SelectLocation from "./features/store/pages/SelectLocation";
 import Products from "./features/product/pages/Products";
 import ProductDetail from "./features/product/pages/ProductDetail";
+import GlobalToaster from "./components/ui/layout/GlobalToaster";
 
 const AppContent = () => {
   useAuthStore((state) => state.token);
@@ -24,7 +26,9 @@ const AppContent = () => {
     <div className='App flex flex-col min-h-screen'>
 
       {location.pathname !== "/login" && <Header />}
-
+      
+      <GlobalToaster />
+      <GlobalDialog />
       <CartSidebar />
 
       <Routes>

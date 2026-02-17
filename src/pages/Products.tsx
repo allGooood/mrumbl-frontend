@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useProductActions, type ProductsByCategory } from "../../../api/productService";
+import { useProductActions, type ProductsByCategory } from "../api/productService";
 import {
   useStoreService,
   type getStoreInformationResponse,
-} from "../../../api/storeService";
-import ProductCategorySection from "../../../components/features/product/ProductCategorySection";
-import ProductEmpty from "../../../components/features/product/ProductEmpty";
-import ProductsStoreBar from "../../../components/features/product/ProductsStoreBar";
-import LocationPickerPanel from "../../../components/features/product/LocationPickerPanel";
-import { parseId } from "../../../utils/urlManager";
-import { useLoading } from "../../../shared/hooks/useLoading";
-import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
-import { getErrorMessage } from "../../../utils/errorHandler";
-import { useNavigate } from "react-router-dom";
+} from "../api/storeService";
+import ProductCategorySection from "../components/features/products/ProductCategorySection";
+import ProductsStoreBar from "../components/features/products/ProductsStoreBar";
+import LocationPickerPanel from "../components/features/products/LocationPickerPanel";
+import { parseId } from "../utils/urlManager";
+import GlobalFullPageLoader from "../components/ui/layout/GlobalFullPageLoader";
 
 type RouteParams = {
   storeId: string;
@@ -21,31 +17,29 @@ type RouteParams = {
 
 export type OrderType = "PICK_UP" | "DELIVERY";
 
-const Products = (): React.ReactElement | null => {
+const Products = (): React.ReactElement => {
   const { storeId: storeIdParam } = useParams<RouteParams>();
   const storeId = parseId(storeIdParam);
 
+  // URL 경로가 /order/pickup/:storeId 이므로 항상 PICK_UP
   const orderType: OrderType = "PICK_UP";
 
   const { getProducts } = useProductActions();
   const { getStoreInformation } = useStoreService();
-  const { setLoading } = useLoading();
-  const showDialog = useAppDialogStore((state) => state.showDialog);
-  const navigate = useNavigate();
 
   const [products, setProducts] = useState<ProductsByCategory[]>([]);
   const [store, setStore] = useState<getStoreInformationResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [showLocationPanel, setShowLocationPanel] = useState(false);
 
   useEffect(() => {
-    if (storeId === null) {
-      navigate("/order/pickup");
-      return;
-    }
+    if (storeId === null) return;
 
     const fetchData = async () => {
       try {
         setLoading(true);
+        setError(null);
 
         const [productsData, storeData] = await Promise.all([
           getProducts(storeId),
@@ -54,16 +48,11 @@ const Products = (): React.ReactElement | null => {
 
         setProducts(productsData);
         setStore(storeData);
-        
       } catch (err) {
-        const errorMessage = getErrorMessage(err, "정보를 불러오는데 실패했습니다.");
+        setError(
+          err instanceof Error ? err.message : "정보를 불러오는데 실패했습니다."
+        );
         console.error(err);
-        
-        showDialog({
-          title: "Invalid request",
-          description: errorMessage,
-          onConfirm: () => navigate("/order/pickup"),
-        });
       } finally {
         setLoading(false);
       }
@@ -76,12 +65,25 @@ const Products = (): React.ReactElement | null => {
     setShowLocationPanel(false);
   }, [storeId]);
 
-  if (!store) {
-    return <ProductEmpty onChooseAnotherStore={() => navigate('/order/pickup')} />
+  if (storeId === null) {
+    return (
+      <div className="p-4 text-gray-600">매장을 선택해 주세요.</div>
+    );
   }
-  
+
+  if (error) {
+    return <div className="p-4 text-red-600">{error}</div>;
+  }
+
+  if (!store) {
+    return (
+      <div className="p-4 text-gray-600">매장 정보를 불러올 수 없습니다.</div>
+    );
+  }
+
   return (
     <div className="pb-8">
+      {loading && <GlobalFullPageLoader />}
       <ProductsStoreBar
         store={store}
         orderType={orderType}
@@ -96,12 +98,11 @@ const Products = (): React.ReactElement | null => {
           .sort((a, b) => a.displayOrder - b.displayOrder)
           .map((byCategory) => (
             <ProductCategorySection
-              key={byCategory.displayOrder}
-              category={byCategory.category}
-              products={byCategory.products}
-            />
-          ))
-        }
+                key={byCategory.displayOrder}
+                category={byCategory.category}
+                products={byCategory.products}
+              />
+          ))}
       </div>
     </div>
   );

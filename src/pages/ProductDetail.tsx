@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useProductActions, type getProductDetailResponse } from "../../../api/productService";
-import { parseId } from "../../../utils/urlManager";
-import CookieBoxDetailContent from "../../../components/features/product/CookieBoxDetailContent";
-import MerchDetailContent from "../../../components/features/product/MerchDetailContent";
-import { useLoading } from "../../../shared/hooks/useLoading";
+import { useProductActions, type getProductDetailResponse } from "../api/productService";
+import { parseId } from "../utils/urlManager";
+import CookieBoxDetailContent from "../components/features/products/CookieBoxDetailContent";
+import MerchDetailContent from "../components/features/products/MerchDetailContent";
+import GlobalFullPageLoader from "../components/ui/layout/GlobalFullPageLoader";
 
 type RouteParams = {
     storeId: string;
@@ -17,9 +17,9 @@ const ProductDetail = () => {
     const productId = parseId(productIdParam);
 
     const { getProductDetail } = useProductActions();
-    const { setLoading } = useLoading();
 
     const [product, setProduct] = useState<getProductDetailResponse | null>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
@@ -47,9 +47,13 @@ const ProductDetail = () => {
 
     return (
         <div className="flex flex-col min-h-[calc(100vh-120px)] bg-white mt-8">
+        {loading && <GlobalFullPageLoader />}
+
+        {/* 메인: 이미지 + 상품 정보 */}
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 py-8 md:py-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-15 items-start">
                 
+                {/* 왼쪽: 상품 이미지 */}
                 <div className="w-full aspect-square rounded-2xl bg-brand-primary overflow-hidden flex items-center justify-center">
                     {product?.imageUrl ? (
                     <img
@@ -62,6 +66,7 @@ const ProductDetail = () => {
                     )}
                 </div>
 
+                {/* 오른쪽: productType별 상품 정보 */}
                 <div className="flex flex-col">
                     <div className="flex flex-col">
                         {product?.productType === "MERCH" && <MerchDetailContent product={product} />}

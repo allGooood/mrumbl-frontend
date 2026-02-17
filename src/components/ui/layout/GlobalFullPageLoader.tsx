@@ -3,7 +3,7 @@ interface FullPageLoaderProps {
   message: string;
 }
 
-const FullPageLoader: React.FC<FullPageLoaderProps> = ({
+const GlobalFullPageLoader: React.FC<FullPageLoaderProps> = ({
   message,
 }) => {
   return (
@@ -29,5 +29,5 @@ const FullPageLoader: React.FC<FullPageLoaderProps> = ({
   );
 };
 
-export default FullPageLoader;
+export default GlobalFullPageLoader;
 

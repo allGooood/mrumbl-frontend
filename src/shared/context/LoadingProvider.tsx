@@ -1,7 +1,7 @@
 import type React from "react";
 import { useState } from "react";
 import { LoadingContext } from "./Loading.context";
-import FullPageLoader from "../../components/ui/layout/FullPageLoader";
+import GlobalFullPageLoader from "../../components/ui/layout/GlobalFullPageLoader";
 
 const DEFAULT_MESSAGE = "Loading...";
 
@@ -23,7 +23,7 @@ export const LoadingProvider: React.FC<{ children: React.ReactNode }> = ({ child
                                     message,
                                     setMessage,
     }}>
-        {loading && <FullPageLoader message={message} />}
+        {loading && <GlobalFullPageLoader message={message} />}
         {children}
     </LoadingContext.Provider>
   );

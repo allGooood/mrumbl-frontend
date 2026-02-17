@@ -77,7 +77,13 @@ export const useStoreService = (): IStoreService => {
         const response = await axios.get<ApiSuccessResponse<getStoreInformationResponse>>(
             `/stores/${storeId}`
         );
-        return response.data?.data;
+        
+        const storeData = response.data?.data;
+        if (!storeData) {
+            throw new Error("매장 정보를 찾을 수 없습니다.");
+        }
+        
+        return storeData;
     };
 
     return { getStores, getNearbyStores, getStoreInformation };
