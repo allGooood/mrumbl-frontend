@@ -1,10 +1,12 @@
 import { create } from "zustand";
 
 export interface AppDialogOptions {
-  title: string;
+  title?: string;
   description: string;
+  subDescription?: string;
   buttonLabel?: string;
   onConfirm?: () => void;
+  onSecondaryAction?: () =>  void;
 }
 
 interface AppDialogState {

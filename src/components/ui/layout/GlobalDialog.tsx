@@ -3,8 +3,7 @@ import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
 
 
 export const GlobalDialog = () => {
-  const options = useAppDialogStore((state) => state.options);
-  const hideDialog = useAppDialogStore((state) => state.hideDialog);
+  const { options, hideDialog } = useAppDialogStore();
 
   return (
     <DialogUI
@@ -12,8 +11,10 @@ export const GlobalDialog = () => {
       onClose={hideDialog}
       title={options?.title ?? ""}
       description={options?.description ?? ""}
-      buttonLabel={options?.buttonLabel}
-      onConfirm={options?.onConfirm}
+      subDescription={options?.subDescription}
+      firstButtonLabel={options?.buttonLabel}
+      firstAction={options?.onConfirm}
+      secondAction={options?.onSecondaryAction}
     />
   );
 };
