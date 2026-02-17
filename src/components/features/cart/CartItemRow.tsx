@@ -15,7 +15,7 @@ type CartItemRowProps = {
 
 export default function CartItemRow({ item, onUpdateQuantity, onRemove }: CartItemRowProps) {
   return (
-    <li className="p-4">
+    <li className="p-5">
       <div className="flex gap-4">
         <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100">
           {item.imageUrl ? (
@@ -41,7 +41,7 @@ export default function CartItemRow({ item, onUpdateQuantity, onRemove }: CartIt
           )}
         </div>
       </div>
-      <div className="mt-2 flex items-center justify-between gap-2">
+      <div className="mt-4 flex items-center justify-between gap-2">
         <QuantitySelector
           value={item.quantity}
           onChange={(q) => onUpdateQuantity(item.cartId, q)}

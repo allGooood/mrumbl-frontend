@@ -28,7 +28,37 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const performAdd = useCallback(
+    const addItem = useCallback(
+        async ({ quantity, options }: AddToCartParams) => {
+            if (storeId === null) return;
+
+            try {
+                setLoading(true);
+                setError(null);
+                
+                await addCarts({
+                    productId,
+                    storeId,
+                    quantity,
+                    productType,
+                    ...(options && options.length > 0 ? { options } : {}),
+                });
+
+                const carts = await getCarts();
+                setCart({ storeId: carts.storeId, items: carts.items });
+            } catch (err) {
+                setError(
+                    err instanceof Error ? err.message : "장바구니에 담는 데 실패했습니다."
+                );
+                throw err;
+            } finally {
+                setLoading(false);
+            }
+        },
+        [productId, storeId, productType, addCarts, getCarts, setCart]
+    );
+
+    const clearDifferentStoreItemsAndAdd = useCallback(
         async ({ quantity, options }: AddToCartParams) => {
             if (storeId === null) return;
 
@@ -78,14 +108,14 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
                     description: DIFFERENT_STORE_MESSAGE,
                     subDescription: DIFFERENT_STORE_SUB_MESSAGE,
                     buttonLabel: "Add",
-                    onConfirm: () => performAdd(params),
+                    onConfirm: () => clearDifferentStoreItemsAndAdd(params),
                     onSecondaryAction: hideDialog,
                 });
             } else {
-                performAdd(params);
+                addItem(params);
             }
         },
-        [storeId, cartStoreId, showDialog, hideDialog, performAdd]
+        [storeId, cartStoreId, showDialog, hideDialog, clearDifferentStoreItemsAndAdd, addItem]
     );
 
     return { addToCart, loading, error, setError };

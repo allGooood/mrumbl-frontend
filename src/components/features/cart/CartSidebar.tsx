@@ -1,9 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useCartStore } from "../../../features/cart/stores/useCartStore";
 import { useAuthStore } from "../../../features/auth/stores/useAuthStore";
 import { useUpdateCart } from "../../../features/cart/hooks/useUpdateCart";
+import { useStoreService } from "../../../api/storeService";
+import type { getStoreInformationResponse } from "../../../api/storeService";
 import CartSidebarHeader from "./CartSidebarHeader";
+import CartStoreInfo from "./CartStoreInfo";
 import CartEmpty from "./CartEmpty";
 import CartItemRow from "./CartItemRow";
 import CartSidebarFooter from "./CartSidebarFooter";
@@ -15,13 +18,25 @@ export default function CartSidebar() {
   const { storeId, items, isCartOpen, closeCart } = useCartStore();
   const subtotal = useCartStore((state) => state.getSubTotal());
   const { syncUpdateQuantity, syncRemoveItem } = useUpdateCart();
+  const { getStoreInformation } = useStoreService();
   const navigate = useNavigate();
   const { user } = useAuthStore();
+  const [store, setStore] = useState<getStoreInformationResponse | null>(null);
 
   const handleCheckout = () => {
     closeCart();
     navigate(`/order/pickup/${storeId}/checkout`);
   };
+
+  useEffect(() => {
+    if (storeId && items.length > 0) {
+      getStoreInformation(storeId)
+        .then(setStore)
+        .catch(() => setStore(null));
+    } else {
+      setStore(null);
+    }
+  }, [storeId]);
 
   useEffect(() => {
     const onEscape = (e: KeyboardEvent) => {
@@ -61,6 +76,8 @@ export default function CartSidebar() {
         onClick={(e) => e.stopPropagation()}
       >
         <CartSidebarHeader onClose={closeCart} />
+
+        {store && <CartStoreInfo store={store} />}
 
         <div className="flex-1 overflow-y-auto flex flex-col">
           {items.length === 0 ? (
