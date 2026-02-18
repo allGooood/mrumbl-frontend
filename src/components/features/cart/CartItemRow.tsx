@@ -1,8 +1,10 @@
+import { Link } from "react-router-dom";
 import type { Cart, CartOption } from "../../../api/cartService";
+import { useCartStore } from "../../../features/cart/stores/useCartStore";
 import { formatCentAsDollar } from "../../../utils/priceFormatter";
 import QuantitySelector from "../../ui/QuantitySelector";
 
-function formatCookieOptions(options: CartOption[] | undefined): string[] {
+export function formatCookieOptions(options: CartOption[] | undefined): string[] {
   if (!options || options.length === 0) return [];
   return options.map((opt) => `${opt.quantity}x ${opt.cookieName}`);
 }
@@ -14,9 +16,12 @@ type CartItemRowProps = {
 };
 
 export default function CartItemRow({ item, onUpdateQuantity, onRemove }: CartItemRowProps) {
+  const { storeId } = useCartStore();
   return (
     <li className="p-5">
-      <div className="flex gap-4">
+
+      <Link to={`/order/pickup/${storeId}/product/${item.productId}`}>
+      <div className="flex gap-4 cursor-pointer">
         <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-gray-100">
           {item.imageUrl ? (
             <img
@@ -41,6 +46,8 @@ export default function CartItemRow({ item, onUpdateQuantity, onRemove }: CartIt
           )}
         </div>
       </div>
+      </Link>
+
       <div className="mt-4 flex items-center justify-between gap-2">
         <QuantitySelector
           value={item.quantity}

@@ -10,7 +10,7 @@ import CartStoreInfo from "./CartStoreInfo";
 import CartEmpty from "./CartEmpty";
 import CartItemRow from "./CartItemRow";
 import CartSidebarFooter from "./CartSidebarFooter";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const CART_PANEL_WIDTH = "min(400px, 100vw - 2rem)";
 

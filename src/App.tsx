@@ -46,21 +46,6 @@ const AppContent = () => {
           <Route path="/order/pickup/:storeId/checkout" element={<CheckOut />}/>
         </Route>
       </Routes>
-
-{/* 
-      <Link to="/">
-        <Button className="mr-2">Home</Button>
-      </Link>
-
-      {!isAuthenticated && (
-        <Link to="/login">
-          <Button className="mr-2">login</Button>
-        </Link>
-      )}
-
-      {isAuthenticated && (
-        <Button onClick={handleLogout}>logout</Button>
-      )} */}
     </div>
   );
 };

@@ -45,6 +45,7 @@ const SignInStep: React.FC = () => {
                 onChange={(e) => updateField('password', e.target.value)}
                 placeholder="Enter your password"
                 required
+                autoFocus
             />
         </>
     );

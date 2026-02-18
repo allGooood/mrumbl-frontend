@@ -12,6 +12,10 @@ export type Cart = {
     requiredItemCount: number;
     quantity: number;
     options?: CartOption[];
+    /** Product type (e.g. COOKIE_BOX, MERCH). When COOKIE_BOX, description may be shown. */
+    productType?: string;
+    /** Shown when productType is COOKIE_BOX. */
+    description?: string;
 }
 
 export type CartOption = {
