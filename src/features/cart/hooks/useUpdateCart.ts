@@ -1,28 +1,27 @@
 import { useCallback, useState } from "react";
-import { useCartActions } from "../../../api/cartService";
+import { useCartActions, type AddCartOption } from "../../../api/cartService";
 import { useCartStore } from "../stores/useCartStore";
 
 export function useUpdateCart() {
     const { updateCart, deleteCarts } = useCartActions();
-    const updateQuantity = useCartStore((state) => state.updateQuantity);
-    const removeItem = useCartStore((state) => state.removeItem);
-
+    const { setCart } = useCartStore();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-
+    
     const syncUpdateQuantity = useCallback(
-        async (cartId: string, quantity: number) => {
+        async (cartId: string, quantity: number, options:AddCartOption[]) => {
             try {
                 setLoading(true);
                 setError(null);
 
                 if (quantity <= 0) {
-                    await deleteCarts([cartId]);
-                    removeItem(cartId);
+                    const cartData = await deleteCarts([cartId]);
+                    setCart(cartData);
                 } else {
-                    await updateCart({ cartId, quantity });
-                    updateQuantity(cartId, quantity);
+                    const cartData = await updateCart({ cartId, quantity, options });
+                    setCart(cartData);
                 }
+
             } catch (err) {
                 setError(
                     err instanceof Error ? err.message : "수량 변경에 실패했습니다."
@@ -32,7 +31,7 @@ export function useUpdateCart() {
                 setLoading(false);
             }
         },
-        [updateCart, deleteCarts, updateQuantity, removeItem]
+        [deleteCarts, setCart, updateCart]
     );
 
     const syncRemoveItem = useCallback(
@@ -40,8 +39,10 @@ export function useUpdateCart() {
             try {
                 setLoading(true);
                 setError(null);
-                await deleteCarts([cartId]);
-                removeItem(cartId);
+
+                const cartData = await deleteCarts([cartId]);
+                setCart(cartData);
+
             } catch (err) {
                 setError(
                     err instanceof Error ? err.message : "항목 삭제에 실패했습니다."
@@ -51,8 +52,9 @@ export function useUpdateCart() {
                 setLoading(false);
             }
         },
-        [deleteCarts, removeItem]
+        [deleteCarts, setCart]
     );
 
     return { syncUpdateQuantity, syncRemoveItem, loading, error, setError };
 }
+

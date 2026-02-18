@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 import { useCartActions } from "../../../api/cartService";
 import type { AddCartOption } from "../../../api/cartService";
 import { useCartStore } from "../stores/useCartStore";
-import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
+import { useDialog } from "../../../shared/stores/useDialog";
 
 export type AddToCartParams = {
     quantity: number;
@@ -21,22 +21,22 @@ const DIFFERENT_STORE_SUB_MESSAGE =
     "Adding this item will remove previously added items.";
 
 export function useAddToCart({ productId, storeId, productType }: UseAddToCartOptions) {
-    const { addCarts, getCarts, deleteCarts } = useCartActions();
+    const { addCarts, deleteCarts } = useCartActions();
     const { setCart, storeId: cartStoreId, items } = useCartStore();
-    const { showDialog, hideDialog } = useAppDialogStore();
+    const { showDialog, hideDialog } = useDialog();
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     const addItem = useCallback(
         async ({ quantity, options }: AddToCartParams) => {
-            if (storeId === null) return;
+            if (!storeId) return;
 
             try {
                 setLoading(true);
                 setError(null);
                 
-                await addCarts({
+                const cartData = await addCarts({
                     productId,
                     storeId,
                     quantity,
@@ -44,8 +44,8 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
                     ...(options && options.length > 0 ? { options } : {}),
                 });
 
-                const carts = await getCarts();
-                setCart({ storeId: carts.storeId, items: carts.items });
+                setCart(cartData);
+
             } catch (err) {
                 setError(
                     err instanceof Error ? err.message : "장바구니에 담는 데 실패했습니다."
@@ -55,7 +55,8 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
                 setLoading(false);
             }
         },
-        [productId, storeId, productType, addCarts, getCarts, setCart]
+
+        [productId, storeId, productType, addCarts, setCart]
     );
 
     const clearDifferentStoreItemsAndAdd = useCallback(
@@ -65,15 +66,14 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
             try {
                 setLoading(true);
                 setError(null);
-
+                
                 // 기존 카트가 있으면 삭제
                 if (items.length > 0) {
                     const cartIds = items.map((item) => item.cartId);
                     await deleteCarts(cartIds);
                 }
 
-                // 새 아이템 추가
-                await addCarts({
+                const cartData = await addCarts({
                     productId,
                     storeId,
                     quantity,
@@ -81,8 +81,8 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
                     ...(options && options.length > 0 ? { options } : {}),
                 });
 
-                const carts = await getCarts();
-                setCart({ storeId: carts.storeId, items: carts.items });
+                setCart(cartData);
+
             } catch (err) {
                 setError(
                     err instanceof Error ? err.message : "장바구니에 담는 데 실패했습니다."
@@ -92,7 +92,7 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
                 setLoading(false);
             }
         },
-        [productId, storeId, productType, addCarts, getCarts, setCart, deleteCarts, items]
+        [storeId, items, addCarts, productId, productType, setCart, deleteCarts]
     );
 
     const addToCart = useCallback(
@@ -120,3 +120,4 @@ export function useAddToCart({ productId, storeId, productType }: UseAddToCartOp
 
     return { addToCart, loading, error, setError };
 }
+

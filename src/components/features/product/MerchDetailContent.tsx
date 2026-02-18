@@ -6,7 +6,7 @@ import Button from "../../ui/Button";
 import QuantitySelector from "../../ui/QuantitySelector";
 import { parseId } from "../../../utils/urlManager";
 import { useAddToCart } from "../../../features/cart/hooks/useAddToCart";
-import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
+import { useDialog } from "../../../shared/stores/useDialog";
 
 const MerchDetailContent = ({ product }: { product: getProductDetailResponse }) => {
     const { storeId: storeIdParam } = useParams<{ storeId?: string }>();
@@ -21,7 +21,7 @@ const MerchDetailContent = ({ product }: { product: getProductDetailResponse }) 
 
     const [quantity, setQuantity] = useState(1);
 
-    const { showDialog } = useAppDialogStore();
+    const { showDialog } = useDialog();
 
     useEffect(() => {
         if (!error) return;

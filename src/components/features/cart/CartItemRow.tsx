@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import type { Cart, CartOption } from "../../../api/cartService";
+import type { AddCartOption, Cart, CartOption } from "../../../api/cartService";
 import { useCartStore } from "../../../features/cart/stores/useCartStore";
 import { formatCentAsDollar } from "../../../utils/priceFormatter";
 import QuantitySelector from "../../ui/QuantitySelector";
@@ -11,7 +11,7 @@ export function formatCookieOptions(options: CartOption[] | undefined): string[]
 
 type CartItemRowProps = {
   item: Cart;
-  onUpdateQuantity: (cartId: string, quantity: number) => void;
+  onUpdateQuantity: (cartId: string, quantity: number, options: AddCartOption[]) => void;
   onRemove: (cartId: string) => void;
 };
 
@@ -51,7 +51,7 @@ export default function CartItemRow({ item, onUpdateQuantity, onRemove }: CartIt
       <div className="mt-4 flex items-center justify-between gap-2">
         <QuantitySelector
           value={item.quantity}
-          onChange={(q) => onUpdateQuantity(item.cartId, q)}
+          onChange={(q) => onUpdateQuantity(item.cartId, q, item.options ?? [])}
           min={0}
           onRemove={() => onRemove(item.cartId)}
           size="small"

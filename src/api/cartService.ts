@@ -38,12 +38,11 @@ export type AddCartOption = {
     quantity: number;
 }
 
-export type CartResponse = {
-    cartIds: string[];
-}
+// export type CartResponse = {
+//     cartIds: string[];
+// }
 
-// export type GetCartsResponse = Cart[];
-export type GetCartsResponse = {
+export type CartCommonResponse = {
     storeId: number;
     items: Cart[];
 };
@@ -55,35 +54,68 @@ export type UpdateCartRequest = {
 }
 
 interface ICartService {
-    addCarts: (request: AddCartRequest) => Promise<CartResponse>;
-    getCarts: () => Promise<GetCartsResponse>;
-    updateCart: (request: UpdateCartRequest) => Promise<void>;
-    deleteCarts: (cartIds: string[]) => Promise<void>;
+    addCarts: (request: AddCartRequest) => Promise<CartCommonResponse>;
+    getCarts: () => Promise<CartCommonResponse>;
+    updateCart: (request: UpdateCartRequest) => Promise<CartCommonResponse>;
+    deleteCarts: (cartIds: string[]) => Promise<CartCommonResponse>;
 }
 
 export const useCartActions = (): ICartService => {
     const addCarts = async (request: AddCartRequest) => {
-        const response = await axios.post<ApiSuccessResponse<CartResponse>>(
-            "/carts",
+        const response = await axios.post<ApiSuccessResponse<CartCommonResponse>>(
+            "/v2/carts",
             request
         );
         return response.data.data;
     };
 
     const getCarts = async () => {
-        const response = await axios.get<ApiSuccessResponse<GetCartsResponse>>(
-            "/carts"
+        const response = await axios.get<ApiSuccessResponse<CartCommonResponse>>(
+            "/v2/carts"
         );
         return response.data.data;
     };
 
     const updateCart = async (request: UpdateCartRequest) => {
-        await axios.put("/carts", request);
+        const response = await axios.put<ApiSuccessResponse<CartCommonResponse>>(
+            "/v2/carts", 
+            request);
+        return response.data.data;
     };
 
     const deleteCarts = async (cartIds: string[]) => {
-        await axios.delete("/carts", { data: { cartIds } });
+        const response = await axios.delete<ApiSuccessResponse<CartCommonResponse>>(
+            "/v2/carts", 
+            { data: { cartIds } });
+        return response.data.data;
     };
 
     return { addCarts, getCarts, updateCart, deleteCarts };
 };
+
+// export const useCartActions = (): ICartService => {
+//     const addCarts = async (request: AddCartRequest) => {
+//         const response = await axios.post<ApiSuccessResponse<CartResponse>>(
+//             "/v2/carts",
+//             request
+//         );
+//         return response.data.data;
+//     };
+
+//     const getCarts = async () => {
+//         const response = await axios.get<ApiSuccessResponse<GetCartsResponse>>(
+//             "/v2/carts"
+//         );
+//         return response.data.data;
+//     };
+
+//     const updateCart = async (request: UpdateCartRequest) => {
+//         await axios.put("/v2/carts", request);
+//     };
+
+//     const deleteCarts = async (cartIds: string[]) => {
+//         await axios.delete("/v2/carts", { data: { cartIds } });
+//     };
+
+//     return { addCarts, getCarts, updateCart, deleteCarts };
+// };

@@ -15,7 +15,7 @@ interface AppDialogState {
   hideDialog: () => void;
 }
 
-export const useAppDialogStore = create<AppDialogState>((set) => ({
+export const useDialog = create<AppDialogState>((set) => ({
   options: null,
   showDialog: (options) => set({ options }),
   hideDialog: () => set({ options: null }),

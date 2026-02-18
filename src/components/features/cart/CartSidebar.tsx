@@ -10,33 +10,70 @@ import CartStoreInfo from "./CartStoreInfo";
 import CartEmpty from "./CartEmpty";
 import CartItemRow from "./CartItemRow";
 import CartSidebarFooter from "./CartSidebarFooter";
-import { Link, useNavigate } from "react-router-dom";
+import InlineLoader from "../../ui/InlineLoader";
+import { useNavigate } from "react-router-dom";
+import { useCartActions } from "../../../api/cartService";
+import { getErrorMessage } from "../../../utils/errorHandler";
+import { useDialog } from "../../../shared/stores/useDialog";
 
 const CART_PANEL_WIDTH = "min(400px, 100vw - 2rem)";
 
 export default function CartSidebar() {
-  const { storeId, items, isCartOpen, closeCart } = useCartStore();
   const subtotal = useCartStore((state) => state.getSubTotal());
   const { syncUpdateQuantity, syncRemoveItem } = useUpdateCart();
+
   const { getStoreInformation } = useStoreService();
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const [store, setStore] = useState<getStoreInformationResponse | null>(null);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const { storeId, isCartOpen, closeCart } = useCartStore();
+  const { getCarts } = useCartActions();
+  const { items, setCart } = useCartStore();
+  const { showDialog } = useDialog();
+  
   const handleCheckout = () => {
     closeCart();
     navigate(`/order/pickup/${storeId}/checkout`);
   };
 
   useEffect(() => {
-    if (storeId && items.length > 0) {
-      getStoreInformation(storeId)
-        .then(setStore)
-        .catch(() => setStore(null));
-    } else {
-      setStore(null);
-    }
-  }, [storeId]);
+    if (!isCartOpen) return;
+
+    const fetchCarts = async () => {
+      try {
+        setIsLoading(true);
+
+        if (!storeId) {
+          throw new Error("Store ID is required");
+        }
+
+        const [cartData, storeData] = await Promise.all([
+          getCarts(),
+          getStoreInformation(storeId),
+        ]);
+
+        setCart(cartData);
+        setStore(storeData);
+      } catch (err) {
+        const errorMessage = getErrorMessage(
+          err,
+          "정보를 불러오는데 실패했습니다."
+        );
+        console.error(err);
+
+        showDialog({
+          title: "Invalid request",
+          description: errorMessage,
+          onConfirm: () => navigate("/order/pickup"),
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCarts();
+  }, [isCartOpen, storeId]);
 
   useEffect(() => {
     const onEscape = (e: KeyboardEvent) => {
@@ -51,7 +88,7 @@ export default function CartSidebar() {
       document.body.style.overflow = "";
     };
   }, [isCartOpen, closeCart]);
-  
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) closeCart();
   };
@@ -80,7 +117,9 @@ export default function CartSidebar() {
         {store && <CartStoreInfo store={store} />}
 
         <div className="flex-1 overflow-y-auto flex flex-col">
-          {items.length === 0 ? (
+          {isLoading ? (
+            <InlineLoader message="Loading your bag..." />
+          ) : items.length === 0 ? (
             <CartEmpty />
           ) : (
             <ul className="flex-1 divide-y divide-gray-200">
@@ -95,11 +134,13 @@ export default function CartSidebar() {
             </ul>
           )}
 
-          <CartSidebarFooter
-            subtotal={subtotal}
-            canCheckout={items.length > 0 && !!user}
-            onCheckout={handleCheckout}
-          />
+          {!isLoading && (
+            <CartSidebarFooter
+              subtotal={subtotal}
+              canCheckout={items.length > 0 && !!user}
+              onCheckout={handleCheckout}
+            />
+          )}
         </div>
       </div>
     </div>,

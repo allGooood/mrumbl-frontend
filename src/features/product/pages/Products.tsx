@@ -11,7 +11,7 @@ import ProductsStoreBar from "../../../components/features/product/ProductsStore
 import LocationPickerPanel from "../../../components/features/product/LocationPickerPanel";
 import { parseId } from "../../../utils/urlManager";
 import { useLoading } from "../../../shared/hooks/useLoading";
-import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
+import { useDialog } from "../../../shared/stores/useDialog";
 import { getErrorMessage } from "../../../utils/errorHandler";
 import { useNavigate } from "react-router-dom";
 
@@ -30,7 +30,7 @@ const Products = (): React.ReactElement | null => {
   const { getProducts } = useProductActions();
   const { getStoreInformation } = useStoreService();
   const { setLoading } = useLoading();
-  const showDialog = useAppDialogStore((state) => state.showDialog);
+  const showDialog = useDialog((state) => state.showDialog);
   const navigate = useNavigate();
 
   const [products, setProducts] = useState<ProductsByCategory[]>([]);

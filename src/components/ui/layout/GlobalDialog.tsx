@@ -1,9 +1,9 @@
 import { DialogUI } from "./DialogUI";
-import { useAppDialogStore } from "../../../shared/stores/useAppDialogStore";
+import { useDialog } from "../../../shared/stores/useDialog";
 
 
 export const GlobalDialog = () => {
-  const { options, hideDialog } = useAppDialogStore();
+  const { options, hideDialog } = useDialog();
 
   return (
     <DialogUI
