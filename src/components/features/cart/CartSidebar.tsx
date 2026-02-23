@@ -55,6 +55,7 @@ export default function CartSidebar() {
 
         setCart(cartData);
         setStore(storeData);
+        
       } catch (err) {
         const errorMessage = getErrorMessage(
           err,

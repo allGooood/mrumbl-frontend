@@ -47,7 +47,7 @@ export const useAuthActions = (): IAuthService => {
   const signin = async (loginRequest: LoginRequest) => {
     const response = await axios.post<ApiSuccessResponse<LoginResponse>>(
       '/auth/login/email',
-      loginRequest
+      loginRequest,
     );
     const authData = response.data.data;
     const accessToken = authData.accessToken;

@@ -12,10 +12,6 @@ export type Cart = {
     requiredItemCount: number;
     quantity: number;
     options?: CartOption[];
-    /** Product type (e.g. COOKIE_BOX, MERCH). When COOKIE_BOX, description may be shown. */
-    productType?: string;
-    /** Shown when productType is COOKIE_BOX. */
-    description?: string;
 }
 
 export type CartOption = {
@@ -37,10 +33,6 @@ export type AddCartOption = {
     cookieId: number;
     quantity: number;
 }
-
-// export type CartResponse = {
-//     cartIds: string[];
-// }
 
 export type CartCommonResponse = {
     storeId: number;
@@ -93,29 +85,3 @@ export const useCartActions = (): ICartService => {
     return { addCarts, getCarts, updateCart, deleteCarts };
 };
 
-// export const useCartActions = (): ICartService => {
-//     const addCarts = async (request: AddCartRequest) => {
-//         const response = await axios.post<ApiSuccessResponse<CartResponse>>(
-//             "/v2/carts",
-//             request
-//         );
-//         return response.data.data;
-//     };
-
-//     const getCarts = async () => {
-//         const response = await axios.get<ApiSuccessResponse<GetCartsResponse>>(
-//             "/v2/carts"
-//         );
-//         return response.data.data;
-//     };
-
-//     const updateCart = async (request: UpdateCartRequest) => {
-//         await axios.put("/v2/carts", request);
-//     };
-
-//     const deleteCarts = async (cartIds: string[]) => {
-//         await axios.delete("/v2/carts", { data: { cartIds } });
-//     };
-
-//     return { addCarts, getCarts, updateCart, deleteCarts };
-// };
